@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dashy
+  template:
+    metadata:
+      labels:
+        app: dashy
+    spec:
+      containers:
+        - name: dashy
+          image: docker.io/lissy93/dashy
+          env:
+            - name: GID
+              value: "1001"
+            - name: NODE_ENV
+              value: production
+            - name: UID
+              value: "1001"
+          livenessProbe:
+            exec:
+              command:
+                - node
+                - /app/services/healthcheck
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 10
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /app/public/conf.yml
+              name: config
+              subPath: conf.yaml
+      volumes:
+        - name: config
+          configMap:
+            name: dashy-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dashy
+  name: dashy
+spec:
+  selector:
+    app: dashy
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashy
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  rules:
+    - host: super.fish
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashy
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - super.fish
+      secretName: super.fish

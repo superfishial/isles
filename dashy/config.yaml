@@ -1,0 +1,199 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashy-config
+data:
+  conf.yaml: |-
+    pageInfo:
+      title: superfishial dashboard
+    appConfig:
+      theme: dracula
+      statusCheck: true
+      statusCheckInterval: 60
+      webSearch:
+        searchEngine: duckduckgo
+      layout: auto
+      iconSize: large
+      language: en
+    sections:
+      - name: Media
+        icon: fad fa-photo-video
+        items:
+          - title: Jellyfin
+            description: Media server
+            icon: hl-jellyfin
+            url: https://watch.super.fish
+            id: 0_480_jellyfin
+          - title: Jellyseer
+            description: Request media for jellyfin
+            icon: hl-jellyseerr
+            url: https://request.watch.super.fish
+            id: 1_480_jellyseer
+          - title: Sonarr
+            description: TV downloader
+            icon: hl-sonarr
+            url: https://sonarr.watch.super.fish
+            id: 2_480_sonarr
+          - title: Radarr
+            description: Movie downloader
+            icon: https://raw.githubusercontent.com/NX211/homer-icons/master/png/radarr.png
+            # icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/master/svg/radarr.svg
+            url: https://radarr.watch.super.fish
+            id: 3_480_radarr
+          - title: Bazarr
+            description: Subtitles management
+            icon: hl-bazarr
+            url: https://bazarr.watch.super.fish
+            id: 4_480_bazarr
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+      - name: Storage
+        icon: fad fa-database
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Immich
+            description: Photos storage
+            icon: hl-immich
+            url: https://photos.super.fish
+            id: 0_725_immich
+          - title: Syncthing
+            description: Persistent peer
+            icon: hl-syncthing
+            url: https://sync.super.fish
+            statusCheckAcceptCodes: '401'
+            id: 1_725_syncthing
+          - title: Bin
+            description: Pastebin
+            icon: fad fa-paste
+            url: https://paste.super.fish
+            id: 2_725_bin
+      - name: Productivity
+        icon: fad fa-bookmark
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Matrix
+            description: Element matrix server
+            icon: hl-element
+            url: https://matrix.super.fish
+            id: 2_1302_matrix
+          - title: Email
+            description: Mailbox
+            icon: hl-mailu
+            url: https://inbox.purelymail.com
+            id: 3_1302_email
+          - title: shawt af
+            description: gabe's link shortener
+            icon: fad fa-link
+            url: https://shawt.af
+            id: 6_1302_shawtaf
+          - title: go
+            description: depthbomb's link shortener
+            icon: fad fa-link
+            url: https://go.super.fish
+            id: 7_1302_go
+      - name: Monitoring
+        icon: fad fa-analytics
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Grafana
+            description: Observability
+            icon: hl-grafana
+            url: https://observability.super.fish
+            id: 0_1062_grafana
+      - name: Admin
+        icon: fad fa-user-crown
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Traefik
+            description: Ingress dashboard
+            icon: hl-traefik
+            url: https://traefik.super.fish
+            statusCheckAcceptCodes: '401'
+            id: 0_489_traefik
+          - title: Longhorn
+            description: Block storage dashboard
+            icon: hl-longhorn
+            url: https://longhorn.super.fish
+            statusCheckAcceptCodes: '401'
+            id: 1_489_longhorn
+          - title: Docker
+            description: Container registry
+            icon: hl-harbor
+            url: https://docker.super.fish
+            id: 7_489_harbor
+      - name: Auth
+        icon: fad fa-user
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Authentik
+            description: OAuth provider
+            icon: hl-authentik
+            url: https://auth.super.fish
+            id: 0_402_authentik
+          - title: Bitwarden
+            description: Password manager
+            icon: hl-bitwarden
+            url: https://bitwarden.super.fish
+            id: 1_402_bitwarden
+      - name: Trash
+        icon: fad fa-trash
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: FKN API
+            description: ''
+            icon: fad fa-question
+            url: https://api.fkn.app
+            id: 0_514_fknapi
+          - title: FKN Proxy
+            icon: fad fa-archway
+            url: https://proxy.fkn.app
+            id: 1_514_fknproxy
+      - name: Financials
+        icon: fad fa-coins
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Open Collective
+            description: Contribute to the collective
+            icon: favicon
+            url: https://opencollective.com/superfishial
+            statusCheck: false
+            id: 0_1016_opencollective
