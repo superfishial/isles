@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: harbor
+  namespace: argocd
+spec:
+  project: isles
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: harbor
+  source:
+    repoURL: https://github.com/superfishial/isles
+    path: harbor
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

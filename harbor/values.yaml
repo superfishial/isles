@@ -1,0 +1,162 @@
+redis:
+  fullnameOverride: harbor-redis
+  auth:
+    enabled: false
+  metrics:
+    enabled: true
+    podMonitor:
+      enabled: true
+  replica:
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        cpu: "1"
+        memory: 2Gi
+  sentinel:
+    enabled: true
+    replicas: 2
+    automateClusterRecovery: true
+    downAfterMilliseconds: 2000
+    failoverTimeout: 10000
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+      limits:
+        cpu: 200m
+        memory: 100Mi
+
+harbor:
+  externalURL: https://docker.super.fish
+  existingSecretAdminPassword: harbor
+  expose:
+    type: ingress
+    tls:
+      enabled: true
+      certSource: secret
+      secret:
+        secretName: docker.super.fish
+    ingress:
+      hosts:
+        core: docker.super.fish
+      annotations:
+        kubernetes.io/tls-acme: "true"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+  # The update strategy for deployments with persistent volumes (jobservice, registry): "RollingUpdate" or "Recreate"
+  # Only jobservice because we use s3 for images and charts
+  updateStrategy:
+    type: Recreate
+  persistence:
+    imageChartStorage:
+      type: s3
+      s3:
+        region: us-east-1
+        regionendpoint: s3.us-west-004.backblazeb2.com
+        bucket: super-cluster-harbor
+        existingSecret: harbor
+
+  # Cloudnative-pg handles the postgres
+  database:
+    type: external
+    external:
+      host: harbor-postgres-rw
+      port: "5432"
+
+      coreDatabase: registry
+
+      username: harbor
+      # the key must be "password"
+      existingSecret: harbor-postgres
+      sslmode: require
+
+  # Bitnami redis handles the redis
+  redis:
+    type: external
+    external:
+      addr: harbor-redis:26379
+      sentinelMasterSet: mymaster
+
+  # Deployments
+  portal:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: "1"
+        memory: 2Gi
+  core:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: "2"
+        memory: 2Gi
+  jobservice:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: "1"
+        memory: 2Gi
+  registry:
+    replicas: 2
+    registry:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          cpu: "3"
+          memory: 4Gi
+    controller:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          cpu: "1"
+          memory: 2Gi
+  chartmuseum:
+    enabled: true
+    replicas: 2
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+  trivy:
+    enabled: false
+    replicas: 2
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        cpu: "1"
+        memory: 2Gi
+  exporter:
+    replicas: 2
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 256Mi
+  notary:
+    enabled: false

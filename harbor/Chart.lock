@@ -1,0 +1,9 @@
+dependencies:
+- name: harbor
+  repository: https://helm.goharbor.io
+  version: 1.14.0
+- name: redis
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 18.12.1
+digest: sha256:e05e0bf00725ee26a7c036f7283955b92fa03b74b44e75fe5a33fdcedd800ae9
+generated: "2024-02-05T21:47:01.164213496-05:00"

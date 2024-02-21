@@ -1,0 +1,12 @@
+apiVersion: v2
+name: harbor
+description: An open source trusted cloud native registry project that stores, signs, and scans content.
+type: application
+version: 1.0.0
+dependencies:
+  - name: harbor
+    repository: https://helm.goharbor.io
+    version: 1.14.0
+  - name: redis
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 18.12.1
